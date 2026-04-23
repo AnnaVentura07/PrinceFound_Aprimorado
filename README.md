@@ -38,8 +38,8 @@ Este sistema foi desenvolvido como uma **Situação de Aprendizagem (SA)** para 
 
 ### 1. Clonar o Repositório
 ```bash
-git clone 
-cd 
+git clone https://github.com/AnnaVentura07/PrinceFound_Aprimorado
+cd PrinceFound_Aprimorado
 2. Configurar o Ambiente VirtualNo Windows:Bashpython -m venv venv
 venv\Scripts\activate
 No Linux / macOS:Bashpython3 -m venv venv
