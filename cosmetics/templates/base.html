@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>PrinceFound</title>
+    <link rel="stylesheet" href="{% static 'sapinhocss.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="modal fade" id="filtersModal" tabindex="-1" role="dialog" aria-labelledby="filters" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" style="color: #2e7d32;"></h4>
+          </div>
+          <div class="modal-body">
+              {% for element in elements %}
+                  {% if not forloop.first %}<hr/>{% endif %}
+                  {{ element }}
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <a href="{% url 'dicas' %}" class="btn-flutuante" 
+       style="right: auto; left: 40px; background-color: #ff85a2; color: white;" 
+       title="Dicas de Beleza ✨">
+        ✨
+    </a>
+
+    <a href="{% url 'cadastrar_produto' %}" class="btn-flutuante" title="Adicionar Produto"
+       style="background-color: #2e7d32; color: white;">
+        +
+    </a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const messages = document.querySelectorAll('.django-messages');
+                messages.forEach(function(msg) {
+                    msg.style.transition = "opacity 1s ease";
+                    msg.style.opacity = "0";
+                    setTimeout(() => msg.remove(), 1000);
+                });
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

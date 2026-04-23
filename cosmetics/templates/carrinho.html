@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>PrinceFound - Meu Carrinho</title>
+    <link rel="stylesheet" href="{% static 'sapinhocss.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .total-container {
+            margin-top: 20px;
+            text-align: right;
+            padding: 15px;
+            border-top: 2px solid #ffd1dc;
+        }
+        .total-valor {
+            font-size: 1.5rem;
+            color: #d63384;
+            font-weight: 700;
+        }
+        .btn-finalizar {
+            background-color: #2e7d32;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-finalizar:hover {
+            background-color: #1b5e20;
+            transform: scale(1.05);
+        }
+        tbody tr:hover {
+            background-color: #fff9fa;
+            transition: 0.2s;
+        }
+        .cart-messages {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: opacity 1s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card dashboard-container">
+        <div class="header-flex">
+            <h2>Meu Carrinho</h2>
+            <img src="{% static 'sapinhofofo.png' %}" alt="Sapinho" class="sapinho-img" style="width: 60px;">
+        </div>
+
+        {% if messages %}
+            <div id="message-container">
+                {% for message in messages %}
+                    <div class="cart-messages django-messages" 
+                         style="background-color: {% if message.tags == 'success' %}#2e7d32{% else %}#d63384{% endif %};">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço Unit.</th>
+                    <th>Quantidade</th>
+                    <th>Subtotal</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td>{{ item.nome }}</td>
+                    <td>R$ {{ item.preco }}</td>
+                    <td>{{ item.quantidade }}</td>
+                    <td><strong>R$ {{ item.total }}</strong></td>
+                    <td>
+                        <a href="{% url 'remover_do_carrinho' item.id %}" 
+                           style="color: #d32f2f; text-decoration: none; font-weight: 600;"
+                           onclick="return confirm('Remover este item?')">
+                           Remover
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:40px;">
+                        Ops! Seu carrinho está vazio. ✨
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total-container">
+            <p>Total do Pedido:</p>
+            <span class="total-valor">R$ {{ cart.get_total_price }}</span>
+            <br><br>
+            
+            <a href="{% url 'dashboard' %}" class="btn" style="background-color: #f0f0f0; color: #555; text-decoration: none; padding: 10px 20px; border-radius: 20px; display: inline-block; margin-right: 10px;">
+                Voltar
+            </a>
+            
+            {% if cart.get_total_price > 0 %}
+                <a href="#" class="btn-finalizar">Finalizar Pedido</a>
+            {% else %}
+                <button class="btn-finalizar" style="background-color: #ccc; cursor: not-allowed;" disabled>
+                    Carrinho Vazio
+                </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const messages = document.querySelectorAll('.django-messages');
+                messages.forEach(function(msg) {
+                    msg.style.opacity = "0";
+                    setTimeout(() => msg.remove(), 1000);
+                });
+            }, 3000);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Produto</title>
+    <link rel="stylesheet" href="{% static 'sapinhocss.css' %}">
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="login-card">
+        <img src="{% static 'sapinhofofo.png' %}" class="sapinho-img">
+
+        <h2>Novo Cosmético</h2>
+
+        <p>Preencha os dados do produto abaixo:</p>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Salvar Produto</button>
+        </form>
+
+        <br>
+
+        <a href="{% url 'dashboard' %}" class="link-voltar">
+            ← Voltar
+        </a>
+    </div>
+
+</body>
+</html>

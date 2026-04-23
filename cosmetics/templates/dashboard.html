@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>PrinceFound - Dashboard</title>
+    <link rel="stylesheet" href="{% static 'sapinhocss.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="login-card dashboard-container">
+        <div class="header-flex">
+            <h2>Produtos</h2>
+            <div>
+                <p class="slogan">
+                    ✨ Descubra a beleza que há em você ✨
+                </p>
+                <img src="{% static 'sapinhofofo.png' %}" alt="Sapinho" class="sapinho-img">
+            </div>
+        </div>
+
+        {% if messages %}
+            <div id="message-container">
+                {% for message in messages %}
+                    <div class="django-messages"
+                         style="background-color: {% if message.tags == 'success' %}#2e7d32{% else %}#d32f2f{% endif %};">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Marca</th>
+                    <th>Preço</th>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                    <th>Quantidade</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in produtos %}
+                <tr>
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ produto.marca }}</td>
+                    <td>R$ {{ produto.preco }}</td>
+                    <td>{{ produto.categoria.nome }}</td>
+                    <td>{{ produto.descricao|default:"Sem descrição" }}</td>
+                    
+                    <td>
+                        {% if produto.estoque.quantidade and produto.estoque.quantidade > 0 %}
+                            {{ produto.estoque.quantidade }}
+                        {% else %}
+                            <span style="color: #d32f2f; font-weight: bold;">Esgotado</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="col-acoes">
+                        <div class="acoes">
+                            <a href="{% url 'adicionar_ao_carrinho' produto.id %}" class="btn" style="background-color: #ffd1dc; color: #d63384; font-weight: bold;">🛒 ADD</a>
+                            
+                            <a href="{% url 'editar_produto' produto.id %}" class="btn btn-editar">EDITAR</a>
+                            <a href="{% url 'excluir_produto' produto.id %}"
+                               class="btn btn-excluir"
+                               onclick="return confirm('Deseja realmente excluir este produto?')">
+                                 EXCLUIR
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align:center; padding:20px;">
+                        Nenhum cosmético cadastrado.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form action="{% url 'logout' %}" method="post" style="margin-top: 20px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-logout">Sair</button>
+        </form>
+    </div>
+
+    <a href="{% url 'exibir_carrinho' %}" class="btn-flutuante" 
+       style="right: 110px; background-color: #d63384; color: white;" 
+       title="Ver meu Carrinho 🛒">
+        🛒
+    </a>
+
+    <a href="{% url 'dicas' %}" class="btn-flutuante" 
+       style="right: auto; left: 40px; background-color: #ff85a2; color: white;" 
+       title="Dicas de Beleza ✨">
+        ✨
+    </a>
+
+    <a href="{% url 'cadastrar_produto' %}" title="Adicionar Produto"
+       style="position: fixed; bottom: 30px; right: 30px;
+              background-color: #2e7d32; color: white;
+              width: 60px; height: 60px;
+              border-radius: 50%;
+              display: flex; align-items: center; justify-content: center;
+              font-size: 2rem; text-decoration: none;
+              box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+              z-index: 1001;">
+        +
+    </a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const messages = document.querySelectorAll('.django-messages');
+                messages.forEach(function(msg) {
+                    msg.style.transition = "opacity 1s ease";
+                    msg.style.opacity = "0";
+                    setTimeout(() => msg.remove(), 1000);
+                });
+            }, 3000);
+        });
+    </script>
+
+</body>
+</html>

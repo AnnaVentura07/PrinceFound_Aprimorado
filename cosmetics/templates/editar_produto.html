@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Produto</title>
+    <link rel="stylesheet" href="{% static 'sapinhocss.css' %}">
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="login-card">
+
+        <img src="{% static 'sapinhofofo.png' %}" class="sapinho-img">
+
+        <h2>Editar Cosmético</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">
+                Salvar Alterações
+            </button>
+        </form>
+
+        <br>
+
+        <a href="{% url 'dashboard' %}" class="link-voltar">
+            ← Cancelar
+        </a>
+
+    </div>
+
+</body>
+</html>
